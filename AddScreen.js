@@ -60,7 +60,7 @@ const AddWordScreen = () => {
         styles.container,
         {backgroundColor: isDarkMode ? '#000000' : '#FFFFFF'},
       ]}>
-      <Text style={[styles.label, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>
+      <Text style={[styles.label, {color: isDarkMode ? '#FFFFFF' : '#000000'}]} allowFontScaling>
         Add a New Word
       </Text>
       <TextInput
@@ -75,6 +75,7 @@ const AddWordScreen = () => {
         placeholderTextColor={isDarkMode ? '#888888' : '#AAAAAA'}
         value={word}
         onChangeText={setWord}
+        allowFontScaling={true}
       />
       <TextInput
         style={[
@@ -89,6 +90,7 @@ const AddWordScreen = () => {
         value={description}
         onChangeText={setDescription}
         multiline
+        allowFontScaling={true}
       />
       <Button title="Add Word" onPress={checkAndAddWord} />
       {loading && (

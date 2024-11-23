@@ -54,15 +54,15 @@ const FeedScreen = () => {
         <Text
           style={[
             styles.word,
-            {color: isDarkMode ? '#FFFFFF' : '#333333'}, // Adjust text color
-          ]}>
+            {color: isDarkMode ? '#FFFFFF' : '#333333'}, // Adjust text color,
+          ]} allowFontScaling>
           {item.word}
         </Text>
         <Text
           style={[
             styles.description,
             {color: isDarkMode ? '#AAAAAA' : '#666666'}, // Adjust text color
-          ]}>
+          ]} allowFontScaling>
           {item.description}
         </Text>
       </View>
