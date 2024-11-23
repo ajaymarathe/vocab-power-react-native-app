@@ -73,17 +73,6 @@ const FeedScreen = () => {
           {item.description}
         </Text>
       </View>
-      <View
-        style={[
-          styles.iconContainer,
-          {backgroundColor: isDarkMode ? '#333333' : '#FFFFFF'}, // Adjust icon background
-        ]}>
-        <IconOutline
-          name="heart"
-          size={30}
-          color={isDarkMode ? '#FF5555' : 'red'}
-        />
-      </View>
     </View>
   );
 

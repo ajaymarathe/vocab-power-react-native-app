@@ -63,6 +63,8 @@ const App = () => {
           tabBarStyle: {
             backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
             borderTopColor: isDarkMode ? '#333333' : '#CCCCCC',
+            paddingBottom: 7,
+            height: 65,
           },
           tabBarActiveTintColor: isDarkMode ? '#FF5555' : '#FF0000',
           tabBarInactiveTintColor: isDarkMode ? '#AAAAAA' : '#888888',
