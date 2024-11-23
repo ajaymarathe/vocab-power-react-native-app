@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -10,6 +11,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {IconOutline} from '@ant-design/icons-react-native';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const FeedScreen = () => {
   const insets = useSafeAreaInsets();
@@ -20,25 +22,30 @@ const FeedScreen = () => {
   const isDarkMode = colorScheme === 'dark';
 
   useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('words')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(
-        snapshot => {
-          if (snapshot) {
-            const wordList = snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setWords(wordList);
-          }
-        },
-        error => {
-          console.error('Firestore snapshot error:', error);
-        },
-      );
+    const fetchWords = async () => {
+      // Ensure the user is authenticated
+      const user = auth().currentUser;
+      if (!user) {
+        console.error('User not authenticated');
+        return;
+      }
 
-    return () => unsubscribe();
+      // Fetch data
+      const unsubscribe = firestore()
+        .collection('words')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
+          const wordList = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setWords(wordList);
+        });
+
+      return () => unsubscribe();
+    };
+
+    fetchWords();
   }, []);
 
   const renderItem = ({item}) => (

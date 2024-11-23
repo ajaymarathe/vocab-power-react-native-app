@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -7,8 +8,10 @@ import {
   StyleSheet,
   ActivityIndicator,
   useColorScheme,
+  Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const AddWordScreen = () => {
   const [word, setWord] = useState('');
@@ -20,6 +23,12 @@ const AddWordScreen = () => {
   const isDarkMode = colorScheme === 'dark';
 
   const checkAndAddWord = async () => {
+    const user = auth().currentUser;
+    if (!user) {
+      Alert.alert('Error', 'User not authenticated');
+      return;
+    }
+
     if (!word || !description) {
       setFeedback('Please fill out both fields');
       return;
@@ -40,6 +49,7 @@ const AddWordScreen = () => {
         await firestore().collection('words').doc(word.toLowerCase()).set({
           word: word,
           description: description,
+          userId: user.uid, // Associate data with the user
           createdAt: firestore.FieldValue.serverTimestamp(), // Add timestamp
         });
         setFeedback('Word added successfully');
@@ -60,7 +70,9 @@ const AddWordScreen = () => {
         styles.container,
         {backgroundColor: isDarkMode ? '#000000' : '#FFFFFF'},
       ]}>
-      <Text style={[styles.label, {color: isDarkMode ? '#FFFFFF' : '#000000'}]} allowFontScaling>
+      <Text
+        style={[styles.label, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}
+        allowFontScaling>
         Add a New Word
       </Text>
       <TextInput

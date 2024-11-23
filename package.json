@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^2.3.2",
-    "@react-native-firebase/app": "^20.4.0",
+    "@react-native-firebase/app": "^21.6.0",
+    "@react-native-firebase/auth": "^21.6.0",
     "@react-native-firebase/firestore": "^20.4.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
