@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700873106230",
+    "project_id": "react-native-vocabpower",
+    "storage_bucket": "react-native-vocabpower.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700873106230:android:8f5ef2afc631f37d298997",
+        "android_client_info": {
+          "package_name": "com.vocabpower"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2LUQr6rT2v8wyfGuEnn0YxcBl2_R2yiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
