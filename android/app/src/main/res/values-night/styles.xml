@@ -3,6 +3,5 @@
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
       <item name="android:textColor">#FFFFFF</item> <!-- White text for dark mode -->
       <item name="android:textColorHint">#CCCCCC</item> <!-- Light gray hint for dark mode -->
-      <item name="android:background">#000000</item> <!-- Black background for dark mode -->
   </style>
 </resources>

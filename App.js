@@ -18,7 +18,7 @@ const App = () => {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: '#FFFFFF',
+      backgroundColor: '#FFFFFF',
       card: '#F8F8F8',
       text: '#000000',
       border: '#CCCCCC',
@@ -29,7 +29,7 @@ const App = () => {
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
-      background: '#000000',
+      backgroundColor: '#000000',
       card: '#1E1E1E',
       text: '#FFFFFF',
       border: '#333333',
