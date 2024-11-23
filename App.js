@@ -1,25 +1,59 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {IconOutline} from '@ant-design/icons-react-native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { IconOutline } from '@ant-design/icons-react-native';
+import { useColorScheme } from 'react-native';
 import FeedScreen from './FeedScreen'; // Update with correct path
 import AddScreen from './AddScreen'; // Update with correct path
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  const colorScheme = useColorScheme(); // Detect system theme (light/dark)
+  const isDarkMode = colorScheme === 'dark';
+
+  // Custom light and dark themes
+  const MyLightTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: '#FFFFFF',
+      card: '#F8F8F8',
+      text: '#000000',
+      border: '#CCCCCC',
+    },
+  };
+
+  const MyDarkTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: '#000000',
+      card: '#1E1E1E',
+      text: '#FFFFFF',
+      border: '#333333',
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-        }}>
+          tabBarStyle: {
+            backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
+            borderTopColor: isDarkMode ? '#333333' : '#CCCCCC',
+          },
+          tabBarActiveTintColor: isDarkMode ? '#FF5555' : '#FF0000',
+          tabBarInactiveTintColor: isDarkMode ? '#AAAAAA' : '#888888',
+        }}
+      >
         <Tab.Screen
           name="Home"
           component={FeedScreen}
           options={{
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <IconOutline name="home" size={size} color={color} />
             ),
           }}
@@ -28,7 +62,7 @@ const App = () => {
           name="Add"
           component={AddScreen}
           options={{
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <IconOutline name="plus-circle" size={size} color={color} />
             ),
           }}

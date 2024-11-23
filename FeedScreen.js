@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Dimensions, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Dimensions,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {IconOutline} from '@ant-design/icons-react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -9,6 +16,8 @@ const FeedScreen = () => {
   const screenHeight = Dimensions.get('window').height;
   const slideHeight = screenHeight - 75 - insets.top - insets.bottom;
   const [words, setWords] = useState([]);
+  const colorScheme = useColorScheme(); // Detect light/dark mode
+  const isDarkMode = colorScheme === 'dark';
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -26,21 +35,47 @@ const FeedScreen = () => {
         },
         error => {
           console.error('Firestore snapshot error:', error);
-        }
+        },
       );
-  
+
     return () => unsubscribe();
   }, []);
-  
 
   const renderItem = ({item}) => (
-    <View style={[styles.slide, {height: slideHeight}]}>
+    <View
+      style={[
+        styles.slide,
+        {
+          height: slideHeight,
+          backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5', // Adjust background for dark/light mode
+        },
+      ]}>
       <View style={styles.textContainer}>
-        <Text style={styles.word}>{item.word}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text
+          style={[
+            styles.word,
+            {color: isDarkMode ? '#FFFFFF' : '#333333'}, // Adjust text color
+          ]}>
+          {item.word}
+        </Text>
+        <Text
+          style={[
+            styles.description,
+            {color: isDarkMode ? '#AAAAAA' : '#666666'}, // Adjust text color
+          ]}>
+          {item.description}
+        </Text>
       </View>
-      <View style={styles.iconContainer}>
-        <IconOutline name="heart" size={30} color="red" />
+      <View
+        style={[
+          styles.iconContainer,
+          {backgroundColor: isDarkMode ? '#333333' : '#FFFFFF'}, // Adjust icon background
+        ]}>
+        <IconOutline
+          name="heart"
+          size={30}
+          color={isDarkMode ? '#FF5555' : 'red'}
+        />
       </View>
     </View>
   );
@@ -52,6 +87,9 @@ const FeedScreen = () => {
       keyExtractor={item => item.id}
       pagingEnabled
       showsVerticalScrollIndicator={false}
+      style={{
+        backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', // Adjust background for FlatList
+      }}
     />
   );
 };
@@ -61,8 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
-    marginHorizontal: 10,
   },
   textContainer: {
     alignItems: 'center',
@@ -71,24 +107,22 @@ const styles = StyleSheet.create({
   word: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
     textAlign: 'center',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   description: {
     fontSize: 18,
-    color: '#666',
     textAlign: 'center',
     marginTop: 10,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   iconContainer: {
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: 'white',
     borderRadius: 30,
     padding: 10,
+    elevation: 5, // Add shadow for better visibility
   },
 });
 
