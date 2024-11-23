@@ -9,14 +9,13 @@ import {
   useColorScheme,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {IconOutline} from '@ant-design/icons-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const FeedScreen = () => {
   const insets = useSafeAreaInsets();
   const screenHeight = Dimensions.get('window').height;
-  const slideHeight = screenHeight - 75 - insets.top - insets.bottom;
+  const slideHeight = screenHeight - 90 - insets.top - insets.bottom;
   const [words, setWords] = useState([]);
   const colorScheme = useColorScheme(); // Detect light/dark mode
   const isDarkMode = colorScheme === 'dark';
@@ -62,14 +61,16 @@ const FeedScreen = () => {
           style={[
             styles.word,
             {color: isDarkMode ? '#FFFFFF' : '#333333'}, // Adjust text color,
-          ]} allowFontScaling>
+          ]}
+          allowFontScaling>
           {item.word}
         </Text>
         <Text
           style={[
             styles.description,
             {color: isDarkMode ? '#AAAAAA' : '#666666'}, // Adjust text color
-          ]} allowFontScaling>
+          ]}
+          allowFontScaling>
           {item.description}
         </Text>
       </View>
