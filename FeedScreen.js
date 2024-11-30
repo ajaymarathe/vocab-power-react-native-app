@@ -110,9 +110,7 @@ const styles = StyleSheet.create({
     width: '100%', // Full width of the screen
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'yellow',
+    padding: 8,
   },
   textContainer: {
     alignItems: 'center',
