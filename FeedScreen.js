@@ -1,24 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
-  Dimensions,
   StyleSheet,
   useColorScheme,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const FeedScreen = () => {
-  const insets = useSafeAreaInsets();
-  const screenHeight = Dimensions.get('window').height;
-  const slideHeight = screenHeight - 90 - insets.top - insets.bottom;
   const [words, setWords] = useState([]);
   const colorScheme = useColorScheme(); // Detect light/dark mode
   const isDarkMode = colorScheme === 'dark';
+
+  const windowHeight = Dimensions.get('window').height; // Full screen height
+
+  // For Android, use StatusBar.currentHeight to get the status bar height
+  const statusBarHeight = StatusBar.currentHeight || 0;
+
+  // Calculate the usable height for each slide (subtract status bar height)
+  const slideHeight = (windowHeight - 65 ) - statusBarHeight; // Remove status bar space
 
   useEffect(() => {
     const fetchWords = async () => {
@@ -47,30 +53,33 @@ const FeedScreen = () => {
     fetchWords();
   }, []);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View
       style={[
         styles.slide,
         {
-          height: slideHeight,
           backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5', // Adjust background for dark/light mode
+          height: slideHeight, // Dynamically adjust slide height
         },
-      ]}>
+      ]}
+    >
       <View style={styles.textContainer}>
         <Text
           style={[
             styles.word,
-            {color: isDarkMode ? '#FFFFFF' : '#333333'}, // Adjust text color,
+            { color: isDarkMode ? '#FFFFFF' : '#333333' }, // Adjust text color
           ]}
-          allowFontScaling>
+          allowFontScaling
+        >
           {item.word}
         </Text>
         <Text
           style={[
             styles.description,
-            {color: isDarkMode ? '#AAAAAA' : '#666666'}, // Adjust text color
+            { color: isDarkMode ? '#AAAAAA' : '#666666' }, // Adjust text color
           ]}
-          allowFontScaling>
+          allowFontScaling
+        >
           {item.description}
         </Text>
       </View>
@@ -78,24 +87,32 @@ const FeedScreen = () => {
   );
 
   return (
-    <FlatList
-      data={words}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      pagingEnabled
-      showsVerticalScrollIndicator={false}
-      style={{
-        backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', // Adjust background for FlatList
-      }}
-    />
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: isDarkMode ? '#000000' : '#FFFFFF' }}
+    >
+      <FlatList
+        data={words}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        pagingEnabled
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', // Adjust background for FlatList
+          flex: 1, // Let FlatList take the full available space
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   slide: {
+    width: '100%', // Full width of the screen
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    borderWidth: 1,
+    borderColor: 'yellow',
   },
   textContainer: {
     alignItems: 'center',
@@ -112,14 +129,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     textTransform: 'capitalize',
-  },
-  iconContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    borderRadius: 30,
-    padding: 10,
-    elevation: 5, // Add shadow for better visibility
   },
 });
 
