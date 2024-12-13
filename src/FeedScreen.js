@@ -9,33 +9,32 @@ import {
   Dimensions,
   SafeAreaView,
   StatusBar,
+  TouchableOpacity
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native'; // For navigation to tag screen
 
 const FeedScreen = () => {
   const [words, setWords] = useState([]);
   const colorScheme = useColorScheme(); // Detect light/dark mode
   const isDarkMode = colorScheme === 'dark';
+  const navigation = useNavigation(); // For navigation to tag screen
 
   const windowHeight = Dimensions.get('window').height; // Full screen height
-
-  // For Android, use StatusBar.currentHeight to get the status bar height
   const statusBarHeight = StatusBar.currentHeight || 0;
 
   // Calculate the usable height for each slide (subtract status bar height)
-  const slideHeight = (windowHeight - 65 ) - statusBarHeight; // Remove status bar space
+  const slideHeight = windowHeight - 65 - statusBarHeight; // Remove status bar space
 
   useEffect(() => {
     const fetchWords = async () => {
-      // Ensure the user is authenticated
       const user = auth().currentUser;
       if (!user) {
         console.error('User not authenticated');
         return;
       }
 
-      // Fetch data
       const unsubscribe = firestore()
         .collection('words')
         .orderBy('createdAt', 'desc')
@@ -98,16 +97,20 @@ const FeedScreen = () => {
         {item.tags && item.tags.length > 0 && (
           <View style={styles.tagsContainer}>
             {item.tags.map((name, index) => (
-              <Text
+              <TouchableOpacity
                 key={index}
-                style={[
-                  styles.tag,
-                  { color: isDarkMode ? '#FFFFFF' : '#000000' },
-                ]}
-                allowFontScaling
+                onPress={() => navigation.navigate('TagWordsScreen', { tag: name })}
               >
-                #{name}
-              </Text>
+                <Text
+                  style={[
+                    styles.tag,
+                    { color: isDarkMode ? '#FFFFFF' : '#000000' },
+                  ]}
+                  allowFontScaling
+                >
+                  #{name}
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
         )}
@@ -140,8 +143,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Align to the left
     alignItems: 'flex-start', // Align to the left
     padding: 15,
-    // borderColor: 'white',
-    // borderWidth: 1,
   },
   textContainer: {
     alignItems: 'flex-start', // Left align text container

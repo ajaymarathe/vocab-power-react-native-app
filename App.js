@@ -9,9 +9,9 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useColorScheme} from 'react-native';
-
-import FeedScreen from './FeedScreen'; // Update with correct path
-import AddScreen from './AddScreen'; // Update with correct path
+import FeedScreen from './src/FeedScreen';
+import AddWordScreen from './src/AddScreen';
+import TagWordsScreen from './src/TagWordsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -80,12 +80,16 @@ const App = () => {
         />
         <Tab.Screen
           name="Add"
-          component={AddScreen}
+          component={AddWordScreen}
           options={{
             tabBarIcon: ({color, size}) => (
               <IconOutline name="plus-circle" size={size} color={color} />
             ),
           }}
+        />
+        <Tab.Screen
+          name="TagWordsScreen"
+          component={TagWordsScreen}
         />
       </Tab.Navigator>
     </NavigationContainer>
