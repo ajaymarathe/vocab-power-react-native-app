@@ -90,6 +90,11 @@ const App = () => {
         <Tab.Screen
           name="TagWordsScreen"
           component={TagWordsScreen}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <IconOutline name="eye" size={size} color={color} />
+            ),
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>
